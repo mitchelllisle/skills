@@ -53,23 +53,60 @@ Ask enough to understand which parts of the stack are touched. Keep questions to
 
 Follow the tech lead's answers — don't ask questions whose answers they've already given you.
 
-### Step 4 — Sequence
+### Step 4 — Break into vertical slices
 
-Reason through the order of work together:
-- What can't start until something else is done?
-- What can run in parallel?
-- Where are the gates — points where a decision or delivery must happen before the next phase can proceed?
+This is the most important step for both planning and staffing. Do not skip it.
 
-Check your reasoning with the tech lead: "Does that sequence make sense to you, or is there something that shifts the order?"
+A **vertical slice** is a thin, end-to-end piece of work that cuts through all the layers needed to deliver a narrow but complete outcome. It is not a horizontal layer of work (e.g. "do all bronze ingestion"). It is a full path through the stack for one specific thing.
 
-### Step 5 — Produce the artifact
+In a data engineering context, a vertical slice might look like:
+- "Ingest [source X], model it through silver, and expose it at gold for [consumer Y]"
+- "Land [entity Z] in bronze, build its 3NF silver representation, and make it available for [integration consumer]"
+- NOT: "Build all bronze tables" — that's horizontal and couples work unnecessarily
 
-Generate the planning artifact below. This document should be self-contained — someone reading it cold (an engineer who wasn't in this conversation) should be able to understand the initiative, the outcome, the shape of the work, and what decisions are theirs to make.
+**Why this matters for staffing:** The number of slices that can run in parallel at any point in the sequence determines how many engineers you need. A single full-stack engineer can own one complete vertical slice — from bronze through to the consuming layer. This is the preferred model: one engineer, full ownership, end-to-end accountability.
+
+Work with the tech lead to identify the slices:
+
+- "If we broke this into thin end-to-end paths rather than layers — what would the natural slices be?"
+- "Which of those slices depend on each other, and which could run independently?"
+- "Could one engineer own a full slice start to finish?"
+
+Present the proposed slices to the tech lead as a list showing what each covers and what it depends on. Ask:
+- "Does this granularity feel right — too coarse, or too fine?"
+- "Are the dependencies correct?"
+- "Should any slices be merged or split?"
+
+Iterate until the tech lead is satisfied.
+
+### Step 5 — Determine staffing
+
+Once the slices are agreed, reason through staffing with the tech lead:
+
+- **Maximum parallelism** = the most slices that could run simultaneously at any point. This is the upper bound on engineers.
+- **Recommended staffing** = the number of engineers that balances parallelism without unnecessary coordination overhead. More engineers is not always better — coordination cost grows with team size.
+- **Preference is full-stack ownership**: one engineer per slice, responsible for the full vertical path. Only split a slice across engineers if it's genuinely too large for one person in the timeframe.
+- **Flag overload risk**: if the number of parallel slices exceeds the team's capacity, flag it — don't silently assume it'll work out.
+
+Ask the tech lead: "How many engineers do you have available, and for how much of their time?" Then match slices to capacity honestly. If the scope doesn't fit the people, say so and explore what can be phased.
+
+### Step 6 — Sequence and gates
+
+Reason through the order of work:
+- Which slices are blocked by other slices or external dependencies?
+- Which can start immediately?
+- Where are the gates — decision or sign-off points that must happen before downstream work can proceed?
+
+Check your reasoning: "Does this sequence make sense to you, or is there something that shifts the order?"
+
+### Step 7 — Produce the artifact
+
+Generate the planning artifact below. This document should be self-contained — an engineer reading it cold should understand the initiative, the outcome, the slices of work, and what decisions are theirs to make.
 
 ```markdown
 # Initiative Plan — [Initiative Name]
 
-> This document was produced in a planning session with the tech lead. It defines the shape of the work and the sequence of steps needed to deliver the outcome. It is not a technical design — the how is for the engineering team to determine. Use this as the starting point for your technical planning and design conversations.
+> This document was produced in a planning session with the tech lead. It defines the shape of the work and the sequence of slices needed to deliver the outcome. It is not a technical design — the how is for the engineering team to determine. Use this as the starting point for your technical planning and design conversations.
 
 ---
 
@@ -87,54 +124,74 @@ Things that must be true before work can begin. Resolve these first.
 
 ---
 
-## Sequence of work
+## Vertical slices
 
-### 1. [Work area name]
-[One or two sentences describing what this area covers. No implementation detail — describe the problem space, not the solution.]
+Each slice is an end-to-end path through the stack for one narrow outcome. A single engineer should be able to own a full slice. Slices that are not blocked by each other can run in parallel.
 
-**Skills needed:** [e.g. data engineer, analytics engineer, data modeller, platform engineer]
-**Depends on:** [prior step, external dependency, or "can start immediately"]
+### Slice 1 — [Name]
+[One or two sentences describing the end-to-end path this slice covers — what goes in, what comes out, who consumes it.]
 
-### 2. [Work area name]
+**Layers touched:** [e.g. Bronze → Silver → Gold]
+**Depends on:** [other slice or external dependency, or "none — can start immediately"]
+**Can run in parallel with:** [other slices, or "none"]
+
+### Slice 2 — [Name]
 [Description]
 
-**Skills needed:** [roles]
-**Depends on:** [what must be done first]
+**Layers touched:** [layers]
+**Depends on:** [dependency]
+**Can run in parallel with:** [slices]
 
-### 3. ...
+### Slice 3 — ...
+
+---
+
+## Staffing
+
+**Recommended engineers:** [number]
+**Rationale:** [how many slices run in parallel at peak, why this number balances parallelism against coordination cost]
+
+**Suggested allocation:**
+- Engineer 1: [Slice(s)]
+- Engineer 2: [Slice(s)]
+- ...
+
+**Notes:**
+[Flag any slices that may be too large for one engineer, coordination risks if the team is larger than recommended, or capacity concerns if the date is tight]
 
 ---
 
 ## Gates
-Decision points or approvals that must happen before downstream work can proceed. These are the places initiatives stall — flag them early.
+Decision points that must happen before downstream work can proceed.
 
-- [Gate]: [what decision or sign-off is needed, and what it unlocks]
+- [Gate]: [what decision or sign-off is needed and what it unlocks]
 
 ---
 
 ## Considerations for the engineering team
-Things worth thinking about as you move into technical design. These are not decisions — they are prompts. The engineering team owns the how.
+Things worth thinking about as you move into technical design. These are prompts, not decisions — the engineering team owns the how.
 
 - [Consideration]: [brief framing of why this is worth thinking about]
 
 ---
 
 ## Open questions
-Unresolved scoping or dependency questions the tech lead needs to chase before this plan is fully solid.
+Unresolved scoping or dependency questions the tech lead needs to chase.
 
 - [Question]
 
 ---
 
 ## Scope note
-[Honest assessment of whether the date looks achievable given the scope. If it's tight, say so and suggest what could be phased or descoped.]
+[Honest assessment of whether the date is achievable given the slices and the recommended staffing. If it's tight, say so and suggest what could be phased.]
 ```
 
 ## Facilitator principles
 
 - **You are not the expert in the room.** The tech lead knows this domain. Your job is structure, not direction.
-- **Ask, don't tell.** Surface things through questions. If something seems missing, ask about it — don't assume and fill it in.
-- **Stay at altitude.** If you find yourself writing about implementation, you've gone too far. Redirect back to scope and sequence.
-- **Check in as you go.** After drafting each section, confirm with the tech lead: "Does this capture what you meant?" They may correct or add nuance.
-- **Considerations, not prescriptions.** The "Considerations" section is the only place to offer technical pointers — and frame them as questions for the team to explore, not answers to adopt.
-- **The artifact is for the engineers, not the session.** Write it so someone who wasn't in the room can pick it up cold and know exactly where to start.
+- **Vertical slices over horizontal layers.** Always push toward end-to-end slices rather than layer-by-layer work packages. This produces better plans and clearer staffing answers.
+- **Full-stack ownership is the default.** One engineer, one slice, end-to-end. Only split a slice if there's a genuine reason — not because the work touches multiple layers.
+- **More engineers is not always better.** A team of two who each own a full slice will usually outperform a team of four splitting work horizontally. Surface this trade-off if it's relevant.
+- **Check in as you go.** After drafting sections, confirm with the tech lead: "Does this capture what you meant?"
+- **The artifact is for the engineers.** Write it so someone who wasn't in this conversation can pick it up cold and know exactly where to start.
+- **Stay at altitude.** If you find yourself writing about implementation, you've gone too far.
