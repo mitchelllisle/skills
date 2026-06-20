@@ -119,3 +119,9 @@ Offer to save this as a file in the current repo (e.g. `docs/domain/[domain-name
 - Ask "why" often — surface the reasoning behind terms and decisions, not just the facts
 - Flag ambiguity when you hear it: "You used two different words for that — is that intentional?"
 - Push for precision on definitions: vague glossaries are worse than no glossary
+
+## Handoffs
+
+- **After producing domain documentation** → suggest `/domain-audit` to check whether the codebase actually reflects the language just defined. Documentation without a code check is wishful thinking.
+- **Knowledge gaps surface during the session?** → suggest `/grill-me` on the domain once the doc is done — use the glossary as the quiz source to verify the team knows what they just wrote.
+- **Starting an initiative in this domain?** → the output of this session is the language input for `/initiative-plan`. Run domain-doc first so the plan uses the right terms.

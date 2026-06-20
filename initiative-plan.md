@@ -195,3 +195,9 @@ Unresolved scoping or dependency questions the tech lead needs to chase.
 - **Check in as you go.** After drafting sections, confirm with the tech lead: "Does this capture what you meant?"
 - **The artifact is for the engineers.** Write it so someone who wasn't in this conversation can pick it up cold and know exactly where to start.
 - **Stay at altitude.** If you find yourself writing about implementation, you've gone too far.
+
+## Handoffs
+
+- **Before starting** → if the domain isn't well documented, suggest `/domain-doc` first. A plan written without a shared domain language will embed the wrong terms into tickets and designs.
+- **After producing the artifact** → suggest `/domain-audit` on it. Check that the plan uses domain-correct language before it goes to the engineering team — drift caught here is cheaper than drift caught in a PR.
+- **Tech lead's understanding feels shaky?** → suggest `/grill-me` on the initiative topic before finalising. If they can't answer questions about the domain or the problem space, the plan isn't ready.

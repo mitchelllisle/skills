@@ -11,3 +11,9 @@ After 10 questions (or when they say stop), give a one-paragraph debrief: final 
 **Start by assessing context.** If the user passes a topic (e.g. `/grill-me Python generators`), use that. If they pass a plan or design, stress-test that. Otherwise, infer from the codebase what to grill them on.
 
 Begin immediately: "Alright. [Topic]. First question:" — no preamble.
+
+## Handoffs
+
+- **Gaps in domain knowledge surface?** Suggest `/domain-doc` — concepts the team struggles to define are undocumented domain terms, not just knowledge gaps.
+- **Grilling a codebase or technical design?** Suggest `/domain-audit` afterwards — weak answers about naming or structure often point to places where the code has drifted from the domain.
+- **Grilling on an initiative plan?** Pair with `/initiative-plan` — use grill-me to stress-test the tech lead's understanding of the work before the artifact is finalised.

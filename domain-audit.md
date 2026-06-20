@@ -118,3 +118,9 @@ For data engineering and platform teams, pay extra attention to:
 - Whether PII fields or sensitive data concepts have clear, consistent naming (not hidden in generic terms like `value`, `field`, `payload`)
 - Whether security boundaries (e.g. `restricted`, `classified`, `internal`) are expressed in the domain model or left implicit
 - Whether data ownership and provenance concepts from the domain are visible in the code structure
+
+## Handoffs
+
+- **No glossary exists?** → run `/domain-doc` first. An audit without a defined language is guesswork.
+- **Audit reveals naming drift or missing concepts?** → suggest `/grill-me` on those specific gaps — the findings become the quiz. This reveals whether the drift is a code problem or a knowledge problem.
+- **Audit run after an `/initiative-plan` session?** → check that the plan artifact uses domain-correct terminology before it goes to the engineering team. Catch language drift before it gets embedded in tickets and designs.
