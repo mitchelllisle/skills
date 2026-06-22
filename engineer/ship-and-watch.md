@@ -170,16 +170,26 @@ while any thread is open.
 gh api graphql -f query='mutation($id:ID!){ resolveReviewThread(input:{threadId:$id}){ thread { isResolved } } }' -F id='<threadId>'
 ```
 
-### Polling discipline
+### Polling with /loop
 
-- Sleep between rounds — 30–60s is reasonable; `sleep 45`.
-- Print a one-line status each round: `checks: <pass/pending/fail> | approved: <y/n> | open threads: <n>`.
-- Cap the wait (e.g. ~20 rounds / ~15 min). If gates are still red at the cap,
-  stop and report current state with the exact blockers — do not loop forever.
-- For the checks portion you may use `gh pr checks "$PR" --watch --fail-fast`
-  to block until CI settles, then re-evaluate B and C.
-- New commits pushed mid-review reset checks — expect Gate A to go pending again
-  and keep watching.
+Use `/loop` to drive the watch cycle — do not write a bash `while` loop or `sleep`
+manually. Each iteration of `/loop` is one poll round:
+
+1. Run the three gate checks (bash commands above).
+2. Print one status line: `checks: <pass/none/pending/fail> | approved: <y/n> | open threads: <n>`.
+3. If all gates are green → break out of the loop and proceed to Step 3.
+4. If Gate A is a hard failure → break, report, stop.
+5. Otherwise → let `/loop` iterate again (next round runs automatically).
+
+The user controls the cadence by setting the `/loop` interval when invoking the
+skill. Default to whatever they specify; if unspecified, suggest 30s as a
+reasonable starting point for a repo with CI.
+
+Cap: stop after 20 rounds regardless of state. Report current gate values and
+hand back — do not loop forever.
+
+New commits pushed mid-review reset CI — expect Gate A to go pending again and
+keep watching.
 
 ## Step 3 — Merge
 
