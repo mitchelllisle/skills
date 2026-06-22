@@ -114,9 +114,20 @@ push, and the loop resumes from the new commit.
 
 ### Gate B — Approval
 
-From the status JSON, require `reviewDecision == "APPROVED"`. If it is
-`REVIEW_REQUIRED`, `null`, or `CHANGES_REQUESTED`, the PR is not approved yet —
-keep polling. (You still evaluate Gate C independently; see above.)
+Read `reviewDecision` from the status JSON. Three distinct cases:
+
+| `reviewDecision` | Meaning | Action |
+|---|---|---|
+| `"APPROVED"` | A reviewer approved | Gate B green — proceed |
+| `null` | Repo has no approval requirement; no review submitted | Gates A+C green → **ask the user in chat** before merging |
+| `"REVIEW_REQUIRED"` | Approval required but not yet given | Keep polling |
+| `"CHANGES_REQUESTED"` | Reviewer requested changes | Keep polling |
+
+The `null` case is not the same as approved — it means the repo doesn't enforce
+reviews. Don't merge silently. When A and C are green and B is `null`, break the
+loop and prompt: "All checks pass and every thread is resolved. No reviewer has
+approved this PR (the repo doesn't require one). Ready to merge?" Wait for an
+explicit yes before proceeding to Step 3.
 
 ### Gate C — Comments resolved (GraphQL)
 
@@ -177,7 +188,8 @@ manually. Each iteration of `/loop` is one poll round:
 
 1. Run the three gate checks (bash commands above).
 2. Print one status line: `checks: <pass/none/pending/fail> | approved: <y/n> | open threads: <n>`.
-3. If all gates are green → break out of the loop and proceed to Step 3.
+3. If Gate A and C are green and Gate B is `"APPROVED"` → break and merge (Step 3).
+   If Gate A and C are green and Gate B is `null` → break and ask the user (Step 3).
 4. If Gate A is a hard failure → break, report, stop.
 5. Otherwise → let `/loop` iterate again (next round runs automatically).
 
@@ -193,15 +205,21 @@ keep watching.
 
 ## Step 3 — Merge
 
-Only when **A, B, and C are all green** and `mergeable` is not `CONFLICTING`.
+Only when **A and C are green** and `mergeable` is not `CONFLICTING`.
 
-Merging is irreversible-ish and destructive to the branch — confirm the merge
-strategy with the user before running it (default to squash unless the repo or
-user says otherwise):
+**If `reviewDecision == "APPROVED"`** — proceed directly:
 
 ```bash
 gh pr merge "$PR" --squash --delete-branch
 ```
+
+**If `reviewDecision == null`** — stop and ask the user in chat:
+
+> "All checks pass and every thread is resolved. No reviewer has approved this
+> PR (the repo doesn't require one). Ready to merge?"
+
+Wait for an explicit yes. On yes, run the merge command above. On no, stop and
+hand back with current gate status.
 
 If `mergeable == "CONFLICTING"`, stop: the branch needs a rebase/merge from base
 first. Report it; do not force anything.
@@ -256,7 +274,7 @@ thread was resolved without being handled — flag it rather than glossing over 
 
 - A check failed (Gate A exit 1).
 - Any review thread is unresolved (Gate C count > 0).
-- No approving review (Gate B not `APPROVED`).
+- Approval gate stuck: `REVIEW_REQUIRED` or `CHANGES_REQUESTED` with no path to green.
 - `mergeable == "CONFLICTING"`.
 - The wait cap was hit with gates still red — report state and hand back.
 

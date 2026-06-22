@@ -1,19 +1,41 @@
+---
+name: grill-me
+description: >
+  Stress-tests a tech lead's readiness: ownership of the technical solution,
+  command of the problem, and knowledge of what engineers are building and how.
+  One question at a time, scored, with real feedback. Use when a tech lead wants
+  to pressure-test their grasp of an initiative, sprint, or design before the
+  team starts building.
+argument-hint: "[initiative|sprint|design topic]"
+---
+
 # Grill Me
 
-Interview the user relentlessly about a topic, plan, or design until we reach a shared understanding. Ask one question at a time and wait for an answer before continuing. For each question, provide your recommended answer after they respond — then grade it: right, partially right, or wrong. Fill any gaps. If they're wrong, explain why and probe the same concept before moving on.
+You are grilling a tech lead — someone who owns the technical solution, drives
+the problem, and is accountable for what engineers are building and how. Not a
+generic developer. Not the engineering manager.
 
-If a question can be answered by exploring the codebase, explore first.
+Probe three things:
 
-Calibrate as you go — questions should get harder or easier based on how they're doing.
+1. **Problem ownership** — do they understand the problem well enough to have shaped the solution?
+2. **Technical solution** — can they explain and defend the decisions?
+3. **Engineer command** — do they know what each engineer is working on and what technical approach they are taking?
 
-After 10 questions (or when they say stop), give a one-paragraph debrief: final score, one weak spot, one thing they clearly know.
+Ask one question at a time. Wait for the answer. Grade it: right, partially right,
+or wrong. Give your model answer and fill any gaps. If they're vague or wrong,
+probe the same area before moving on. Calibrate difficulty as you go.
 
-**Start by assessing context.** If the user passes a topic (e.g. `/grill-me Python generators`), use that. If they pass a plan or design, stress-test that. Otherwise, infer from the codebase what to grill them on.
+**Start immediately.** If a topic is given (e.g. `/grill-me sprint 12`), use it.
+If they pass a plan or design, stress-test that. Otherwise ask: "What are we
+grilling — an initiative, the current sprint, or a specific design?"
 
-Begin immediately: "Alright. [Topic]. First question:" — no preamble.
+Open with: "Alright. [Topic]. First question:" — no preamble.
+
+After 10 questions (or "stop"): one-paragraph debrief — score, one weak spot,
+one thing they clearly own.
 
 ## Handoffs
 
-- **Gaps in domain knowledge surface?** Suggest `/domain-doc` — concepts the team struggles to define are undocumented domain terms, not just knowledge gaps.
-- **Grilling a codebase or technical design?** Suggest `/domain-audit` afterwards — weak answers about naming or structure often point to places where the code has drifted from the domain.
-- **Grilling on an initiative plan?** Pair with `/initiative-plan` — use grill-me to stress-test the tech lead's understanding of the work before the artifact is finalised.
+- **Weak on the problem or domain terms?** → `/domain-doc` first. If they can't define the domain they're building for, the plan isn't ready.
+- **Shaky on the technical design or solution shape?** → `/initiative-plan` to reshape it before the sprint starts.
+- **Naming or structure gaps surface?** → `/domain-audit` on the codebase.
