@@ -8,12 +8,27 @@ Skills are markdown files that tell Claude how to behave for a specific task. Dr
 
 ## Skills
 
+Skills are organised by the persona they serve.
+
+### Engineering Manager
+
+_None yet._
+
+### Tech Lead
+
 | Skill | Invoke | Description |
 |-------|--------|-------------|
-| [grill-me](./grill-me.md) | `/grill-me` | Quizzes you on your current codebase or a topic you specify. One question at a time, scored, with real feedback. |
-| [domain-doc](./domain-doc.md) | `/domain-doc` | Guided DDD session to extract and document a domain's ubiquitous language, bounded contexts, events, and key decisions. |
-| [domain-audit](./domain-audit.md) | `/domain-audit` | Audits a codebase for alignment with domain language — finds naming drift, missing domain concepts, and structural gaps. |
-| [initiative-plan](./initiative-plan.md) | `/initiative-plan` | Takes an initiative description, outcome, and date and produces a phased technical plan across the medallion stack. For tech leads. |
+| [initiative-plan](./tech-lead/initiative-plan.md) | `/initiative-plan` | Takes an initiative description, outcome, and date and produces a phased technical plan across the medallion stack. |
+| [domain-doc](./tech-lead/domain-doc.md) | `/domain-doc` | Guided DDD session to extract and document a domain's ubiquitous language, bounded contexts, events, and key decisions. |
+| [grill-me](./tech-lead/grill-me.md) | `/grill-me` | Quizzes you on your current codebase or a topic you specify. One question at a time, scored, with real feedback. |
+| [domain-audit](./tech-lead/domain-audit.md) | `/domain-audit` | Audits a codebase for alignment with domain language — finds naming drift, missing domain concepts, and structural gaps. |
+
+### Engineer
+
+| Skill | Invoke | Description |
+|-------|--------|-------------|
+| [conduit](./engineer/conduit.md) | `/conduit` | Forces the laziest clean data pipeline that works — stdlib first, Pydantic at trust boundaries, pure composable functions. Levels: lite, full, ultra. |
+| [ship-and-watch](./engineer/ship-and-watch.md) | `/ship-and-watch` | Opens a PR with the GitHub CLI, then polls until checks pass, the PR is approved, and every review thread is resolved — gating on thread resolution, not "changes requested" — merges, and summarises what changed and which suggestions were addressed. |
 
 ## Usage
 
