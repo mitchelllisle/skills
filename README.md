@@ -27,7 +27,9 @@ _None yet._
 
 | Skill | Invoke | Description |
 |-------|--------|-------------|
-| [conduit](./engineer/conduit.md) | `/conduit` | Forces the laziest clean data pipeline that works — stdlib first, Pydantic at trust boundaries, pure composable functions. Levels: lite, full, ultra. |
+| [conduit-core](./engineer/conduit-core.md) | `/conduit-core` | Language-agnostic core of the conduit discipline — the ladder, laziness, security, and intensity levels (lite, full, ultra). Pair with a language skill. |
+| [conduit-py](./engineer/conduit-py.md) | `/conduit-py` | Python conduit tooling — Pydantic at boundaries, stdlib-first functional style, Spark/Databricks patterns, Google docstrings, pytest + hypothesis. Reads conduit-core. |
+| [conduit-ts](./engineer/conduit-ts.md) | `/conduit-ts` | TypeScript conduit tooling — Zod at boundaries, strict tsconfig, JS→TS on touch, React/Svelte patterns, TSDoc, Vitest + fast-check. Reads conduit-core. |
 | [ship-and-watch](./engineer/ship-and-watch.md) | `/ship-and-watch` | Opens a PR with the GitHub CLI, then polls until checks pass, the PR is approved, and every review thread is resolved — gating on thread resolution, not "changes requested" — merges, and summarises what changed and which suggestions were addressed. |
 
 ## Usage
