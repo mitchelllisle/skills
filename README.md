@@ -12,7 +12,10 @@ Skills are organised by the persona they serve.
 
 ### Engineering Manager
 
-_None yet._
+| Skill | Invoke | Description |
+|-------|--------|-------------|
+| [growth-plan](./engineering-manager/growth-plan.md) | `/growth-plan` | Builds a development plan for one engineer against the team's role ladder — diagnoses the gap to the next level, sets one quarterly stretch goal framed for intrinsic motivation, and names the support the manager owes. |
+| [one-on-one](./engineering-manager/one-on-one.md) | `/one-on-one` | Preps a fortnightly 1:1 that surfaces motivation, friction, and growth instead of status — produces a short, tailored prep sheet of follow-ups, questions, and one thing to listen for. |
 
 ### Tech Lead
 
